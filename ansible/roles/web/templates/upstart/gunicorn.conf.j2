@@ -1,0 +1,17 @@
+description "Gunicorn application server running notes-web"
+
+start on runlevel [2345]
+stop on runlevel [!2345]
+
+respawn
+setuid web
+setgid www-data
+
+env SETTINGS=AWS
+
+chdir {{ app.path }}
+exec gunicorn --workers {{ gunicorn.workers }} \
+    --timeout 120 \
+    --bind unix:{{ gunicorn.socket_path }} \
+    -m 007 \
+    '{{ gunicorn.app_module }}'

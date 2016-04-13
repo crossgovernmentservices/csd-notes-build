@@ -1,0 +1,9 @@
+---
+app:
+  version: '{{ app_version }}'
+  path: /home/web/app
+
+gunicorn:
+  socket_path: /home/web/app/gunicorn.sock
+  workers: 4
+  app_module: 'app.factory:create_app()'

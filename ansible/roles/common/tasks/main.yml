@@ -1,0 +1,12 @@
+---
+- name: update apt cache
+  apt: update_cache=yes
+
+- name: set locale to en_GB
+  locale_gen: name=en_GB.UTF-8 state=present
+
+- name: be sure ntp is installed
+  apt: name=ntp state=installed
+
+- name: be sure ntp is running and enabled
+  service: name=ntp state=running enabled=yes

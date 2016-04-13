@@ -1,0 +1,78 @@
+---
+- name: install nginx
+  apt: name=nginx state=latest
+
+- name: install git
+  apt: name=git state=latest
+
+- name: install pip
+  apt: name=python3-pip state=latest
+
+- name: create web user
+  user: name=web groups=www-data append=yes
+
+- name: copy .bashrc for web user
+  template:
+    src: bash/bashrc.j2
+    dest: /home/web/.bashrc
+    owner: web
+    group: web
+    mode: 0644
+
+- name: checkout app
+  git:
+    repo: https://github.com/crossgovernmentservices/csd-notes.git
+    dest: '{{ app.path }}'
+    version: '{{ app.version }}'
+  become: yes
+  become_user: web
+  become_method: sudo
+
+# - name: install libffi
+#   apt: name=libffi-dev state=latest
+
+- name: install ruby 2
+  apt: name=ruby2.0 state=latest
+
+- name: install bundler for ruby 2
+  gem: name=bundler state=latest executable=/usr/bin/gem2.0 user_install=no
+
+- name: install zlib
+  apt: name=zlib1g-dev state=latest
+
+- name: install pip requirements
+  pip: executable=/usr/bin/pip3 requirements={{ app.path }}/requirements.txt
+
+- name: install govuk assets
+  shell: python3 manage.py install_all_govuk_assets chdir={{ app.path }}
+  become: yes
+  become_method: sudo
+
+- name: build static assets
+  shell: python3 manage.py assets build chdir={{ app.path }}
+  become: yes
+  become_user: web
+  become_method: sudo
+
+- name: copy nginx.conf
+  template:
+    src: nginx/nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+  notify:
+    - restart nginx
+
+- name: disable default nginx vhost conf
+  file: path=/etc/nginx/sites-enabled/default state=absent
+  notify:
+    - restart nginx
+
+- name: ensure nginx is running
+  service: name=nginx state=started enabled=yes
+
+- name: copy gunicorn upstart script
+  template: src=upstart/gunicorn.conf.j2 dest=/etc/init/gunicorn.conf
+  notify:
+    - restart gunicorn
+
+- name: ensure gunicorn is running
+  service: name=gunicorn state=started enabled=yes
