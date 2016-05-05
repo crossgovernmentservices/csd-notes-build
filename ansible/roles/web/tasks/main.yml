@@ -28,8 +28,8 @@
   become_user: web
   become_method: sudo
 
-# - name: install libffi
-#   apt: name=libffi-dev state=latest
+- name: install libffi
+  apt: name=libffi-dev state=latest
 
 - name: install ruby 2
   apt: name=ruby2.0 state=latest
