@@ -31,6 +31,9 @@
 - name: install libffi
   apt: name=libffi-dev state=latest
 
+- name: install libssl-dev
+  apt: name=libssl-dev state=latest
+
 - name: install ruby 2
   apt: name=ruby2.0 state=latest
 
