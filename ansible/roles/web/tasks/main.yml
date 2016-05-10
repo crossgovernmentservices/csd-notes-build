@@ -15,7 +15,7 @@
   user: name=jenkins groups=www-data append=yes
 
 - name: install jenkins ssh key
-  authorized_key: user=jenkins key={jenkins_ssh_pub_key}
+  authorized_key: user=jenkins key={{jenkins_ssh_pub_key}}
 
 - name: copy .bashrc for web user
   template:
