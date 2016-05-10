@@ -11,6 +11,12 @@
 - name: create web user
   user: name=web groups=www-data append=yes
 
+- name: create jenkins user
+  user: name=jenkins groups=www-data append=yes
+
+- name: install jenkins ssh key
+  authorized_key: user=jenkins key={jenkins_ssh_pub_key}
+
 - name: copy .bashrc for web user
   template:
     src: bash/bashrc.j2
