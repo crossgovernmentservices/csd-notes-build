@@ -52,6 +52,9 @@
 - name: install zlib
   apt: name=zlib1g-dev state=latest
 
+- name: install libpq-dev
+  apt: name=libpq-dev state=latest
+
 - name: install pip requirements
   pip: executable=/usr/bin/pip3 requirements={{ app.path }}/requirements.txt
 
