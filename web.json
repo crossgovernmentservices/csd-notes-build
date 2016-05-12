@@ -23,6 +23,7 @@
       "groups": "web",
       "playbook_file": "ansible/site.yml",
       "extra_arguments": [
+        "-vv",
         "--extra-vars",
         "app_version={{ user `app_version` }}"
       ]
