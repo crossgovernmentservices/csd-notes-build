@@ -56,7 +56,7 @@
   apt: name=libpq-dev state=latest
 
 - name: install pip requirements
-  pip: executable=/usr/bin/pip3 requirements={{ app.path }}/requirements.txt
+  pip: executable=/usr/bin/pip3 extra_args="-q" requirements={{ app.path }}/requirements.txt
 
 - name: install govuk assets
   shell: python3 manage.py install_all_govuk_assets chdir={{ app.path }}
