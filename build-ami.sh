@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # exit if no app or server version supplied
-[[ $# = 1 ]] || { echo "Usage: $0 APP_VERSION SERVER_VERSION"; exit 1; }
+[[ $# = 2 ]] || { echo "Usage: $0 APP_VERSION SERVER_VERSION"; exit 1; }
 
 APP_VERSION=$1
 SERVER_VERSION=$2
