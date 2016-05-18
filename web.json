@@ -12,9 +12,10 @@
     "source_ami": "ami-f95ef58a",
     "instance_type": "t2.small",
     "ssh_username": "ubuntu",
-    "ami_name": "notes-web_{{ timestamp }}_{{ user `app_version` }}",
+    "ami_name": "notes-web.app_version@{{ user `app_version` }}.server_version@{{ user `server_version` }}",
     "tags": {
-      "app_version": "{{ user `app_version` }}"
+      "app_version": "{{ user `app_version` }}",
+      "server_version": "{{ user `server_version` }}"
     }
   }],
   "provisioners": [
